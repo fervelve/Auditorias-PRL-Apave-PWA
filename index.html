@@ -1086,14 +1086,25 @@ async function getGPS(){
 
       // Resolución offline con BD local
       try{
-        const m = getMunicipioFromCoords(parseFloat(lat), parseFloat(lng));
-        if(m){
-          fd.poblacion = m.n; fd.provincia = m.p;
-          document.getElementById('gps-pob-inp').value = m.n;
-          document.getElementById('gps-prov-inp').value = m.p;
-          updateSidebar();
+        if(typeof getMunicipioFromCoords === 'undefined'){
+          alert('DEBUG: función no disponible. typeof MUNIS=' + typeof MUNIS);
+        } else if(typeof MUNIS === 'undefined'){
+          alert('DEBUG: MUNIS no definido');
+        } else {
+          const m = getMunicipioFromCoords(parseFloat(lat), parseFloat(lng));
+          if(m){
+            fd.poblacion = m.n; fd.provincia = m.p;
+            document.getElementById('gps-pob-inp').value = m.n;
+            document.getElementById('gps-prov-inp').value = m.p;
+            updateSidebar();
+            // DEBUG temporal
+            alert('DEBUG OK: ' + m.n + ', ' + m.p);
+          } else {
+            alert('DEBUG: getMunicipioFromCoords devolvió null para lat=' + lat + ' lng=' + lng);
+          }
         }
       }catch(e){
+        alert('DEBUG ERROR: ' + e.message);
         btn.textContent='📍 GPS obtenido — completa los campos manualmente';
       }
     },
