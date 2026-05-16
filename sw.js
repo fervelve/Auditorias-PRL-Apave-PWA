@@ -1,14 +1,15 @@
 // Service Worker — Registro de Visita a Obra (Eurocontrol)
-const CACHE_NAME = 'rvo-eurocontrol-v1';
+const CACHE_NAME = 'rvo-eurocontrol-v2';
+const BASE = '/Auditorias-PRL-Apave-PWA/';
 
 // Archivos propios de la app (siempre en caché)
 const APP_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './municipios.js',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.json',
+  BASE + 'municipios.js',
+  BASE + 'icons/icon-192.png',
+  BASE + 'icons/icon-512.png',
 ];
 
 // Librerías externas a cachear en la primera carga

@@ -1488,7 +1488,7 @@ function onResponsableChange(val){
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('sw.js')
+    navigator.serviceWorker.register('/Auditorias-PRL-Apave-PWA/sw.js', {scope: '/Auditorias-PRL-Apave-PWA/'})
       .then(r=>console.log('SW registrado:', r.scope))
       .catch(e=>console.log('SW error:', e));
   });
