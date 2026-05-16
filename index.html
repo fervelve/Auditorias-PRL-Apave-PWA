@@ -398,6 +398,7 @@ details summary:hover{color:var(--accent);}
             </select>
           </div>
           <button class="btn-start" id="btn-start" onclick="startAudit()" disabled>▶ Iniciar auditoría</button>
+        <button id="btn-install" onclick="installPWA()" style="display:none;margin-top:8px;padding:10px 24px;border-radius:12px;border:2px solid var(--accent);background:transparent;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;">📲 Instalar como app</button>
         </div>
       </div>
     </div>
@@ -1486,6 +1487,35 @@ function onResponsableChange(val){
 </script>
 
 <script>
+// ── PWA Install Prompt ─────────────────────────────────────────
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('btn-install');
+  if(btn) btn.style.display = 'block';
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  const btn = document.getElementById('btn-install');
+  if(btn) btn.style.display = 'none';
+});
+
+function installPWA(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      deferredPrompt = null;
+      document.getElementById('btn-install').style.display = 'none';
+    });
+  } else {
+    alert('Para instalar:\n1. Menú ⋮ de Chrome\n2. \"Añadir a pantalla de inicio\"');
+  }
+}
+
+// ── Service Worker ──────────────────────────────────────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
     navigator.serviceWorker.register('/Auditorias-PRL-Apave-PWA/sw.js', {scope: '/Auditorias-PRL-Apave-PWA/'})
