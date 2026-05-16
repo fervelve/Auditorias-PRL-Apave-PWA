@@ -398,7 +398,7 @@ details summary:hover{color:var(--accent);}
             </select>
           </div>
           <button class="btn-start" id="btn-start" onclick="startAudit()" disabled>▶ Iniciar auditoría</button>
-        <button id="btn-install" onclick="installPWA()" style="display:none;margin-top:8px;padding:10px 24px;border-radius:12px;border:2px solid var(--accent);background:transparent;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;">📲 Instalar como app</button>
+        <button id="btn-install" onclick="installPWA()" style="display:block;margin-top:8px;padding:10px 24px;border-radius:12px;border:2px solid var(--accent);background:transparent;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;">📲 Instalar como app</button>
         </div>
       </div>
     </div>
@@ -1510,8 +1510,22 @@ function installPWA(){
       deferredPrompt = null;
       document.getElementById('btn-install').style.display = 'none';
     });
+    return;
+  }
+  // Chrome 148+: sin beforeinstallprompt — detectar plataforma y dar instrucciones
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isSamsung = /samsungbrowser/i.test(navigator.userAgent);
+
+  if(isIOS){
+    alert('En iPhone/iPad:\n1. Toca el botón Compartir (□↑)\n2. Selecciona "Añadir a pantalla de inicio"\n3. Toca "Añadir"');
+  } else if(isSamsung){
+    alert('En Samsung Internet:\n1. Toca el menú ☰\n2. Selecciona "Añadir página a"\n3. Elige "Pantalla de inicio"');
+  } else if(isAndroid){
+    // Intentar con getInstalledRelatedApps o mostrar instrucciones
+    alert('En Chrome Android:\n1. Toca el menú ⋮ (tres puntos)\n2. Busca "Añadir a pantalla de inicio"\n   o "Instalar app"\n\nSi no aparece:\n• Asegúrate de estar en la URL completa\n• Espera unos segundos y vuelve a intentar');
   } else {
-    alert('Para instalar:\n1. Menú ⋮ de Chrome\n2. \"Añadir a pantalla de inicio\"');
+    alert('Para instalar:\n• Chrome: menú ⋮ → "Instalar app"\n• Edge: menú … → "Aplicaciones" → "Instalar"');
   }
 }
 
