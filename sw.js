@@ -1,5 +1,5 @@
 // Service Worker — Registro de Visita a Obra (Eurocontrol)
-const CACHE_NAME = 'rvo-eurocontrol-v3';
+const CACHE_NAME = 'rvo-eurocontrol-v4';
 const BASE = '/Auditorias-PRL-Apave-PWA/';
 
 const APP_ASSETS = [
