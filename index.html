@@ -822,6 +822,15 @@ function showScreen(id){
 
 function goToStep(n){
   showScreen('screen-'+n);
+  // Rellenar campos GPS si ya tenemos datos
+  if(n===5){
+    const elPob=document.getElementById('gps-pob');
+    const elProv=document.getElementById('gps-prov');
+    const elCp=document.getElementById('gps-cp');
+    if(elPob&&fd.poblacion) elPob.value=fd.poblacion;
+    if(elProv&&fd.provincia) elProv.value=fd.provincia;
+    if(elCp&&fd.cp) elCp.value=fd.cp;
+  }
   document.getElementById('pfill').style.width=Math.round((n/TOTAL)*100)+'%';
   if(n===14){
     document.getElementById('bloque-huawei').style.display=fd.contrata==='Huawei'?'block':'none';
@@ -1098,9 +1107,12 @@ async function getGPS(){
       try{
         const m = getMunicipioFromCoords(parseFloat(lat), parseFloat(lng));
         if(m){
-          fd.poblacion = m.n; fd.provincia = m.p;
-          document.getElementById('gps-pob').value = m.n;
-          document.getElementById('gps-prov').value = m.p;
+          fd.poblacion = m.n; fd.provincia = m.p; fd.cp='';
+          // Rellenar DOM si el elemento existe (puede estar oculto)
+          const elPob = document.getElementById('gps-pob');
+          const elProv = document.getElementById('gps-prov');
+          if(elPob) elPob.value = m.n;
+          if(elProv) elProv.value = m.p;
           updateSidebar();
         }
       }catch(e){
