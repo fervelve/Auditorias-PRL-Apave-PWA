@@ -401,7 +401,6 @@ details summary:hover{color:var(--accent);}
             </select>
           </div>
           <button class="btn-start" id="btn-start" onclick="startAudit()" disabled>▶ Iniciar auditoría</button>
-        <button id="btn-install" onclick="installPWA()" style="display:block;margin-top:8px;padding:10px 24px;border-radius:12px;border:2px solid var(--accent);background:transparent;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;">📲 Instalar como app</button>
         </div>
       </div>
     </div>
@@ -1412,8 +1411,6 @@ function _fillDoc(doc, W, H){
   tx(doc.splitTextToSize(sitVal, 107)[0]||'', 46.3, 74.3, 9);
   tx(fd.cp||'', 170.2, 73.6, 9);
   // GPS: 8cm (80mm) a la izquierda del CP, misma altura
-  if(fd.lat) tx('GPS: '+fd.lat+', '+fd.lng, 90.2, 73.6, 7.5);
-
   // FILA 8 — Poblacion +0.5mm abajo | Provincia +1mm abajo +1mm derecha
   tx(fd.poblacion||'',  72.9, 79.8, 9);
   tx(fd.provincia||'', 155.5, 79.6, 9);
@@ -1589,9 +1586,8 @@ function onResponsableChange(val){
 }
 </script>
 <script>
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});return;}const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);if(isIOS)alert('En iPhone/iPad:\n1. Toca Compartir (□↑)\n2. "Añadir a pantalla de inicio"');else alert('En Chrome Android:\n1. Menú ⋮\n2. "Añadir a pantalla de inicio" o "Instalar app"');}
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/Auditorias-PRL-Apave-PWA/sw.js',{scope:'/Auditorias-PRL-Apave-PWA/'}).then(r=>console.log('SW v6:',r.scope)).catch(e=>console.warn('SW:',e));});}
-</script></body>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/Auditorias-PRL-Apave-PWA/sw.js",{scope:"/Auditorias-PRL-Apave-PWA/"});});}
+function installPWA(){const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);if(isIOS)alert("En iPhone/iPad:\n1. Toca Compartir\n2. Añadir a pantalla de inicio");else alert("En Chrome Android:\n1. Menú ⋮\n2. Añadir a pantalla de inicio");}
+</script>
+</body>
 </html>
